@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('fetch the code') {
             steps {
-               git branch: 'develop', credentialsId: 'github-cred', url: 'https://github.com/devopscloudsre/java-db-Login.git'
+               git branch: 'develop1', credentialsId: 'github-cred', url: 'https://github.com/devopscloudsre/java-db-Login.git'
             }
         }
             
