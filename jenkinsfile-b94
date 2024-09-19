@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "maven"
+    }
+
+    stages {
+        stage('fetch the code') {
+            steps {
+               git branch: 'master', credentialsId: 'github-cred', url: 'https://github.com/devopscloudsre/java-db-Login.git'
+            }
+        }
+            
+        stage('build the code') {
+            steps {
+                sh 'mvn clean package'
+            }          
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-admin-user', path: '', url: 'http://172.31.29.76:8080')], contextPath: '/prod-login', onFailure: false, war: '**/*.war'
+                }
+                failure {
+                    echo "OMG ! The build failed"
+                }
+            }
+        }
+    }
+}
