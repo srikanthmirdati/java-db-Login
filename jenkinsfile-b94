@@ -6,6 +6,10 @@ pipeline {
         maven "maven"
     }
 
+    triggers {
+       githubPush()
+    }
+
     stages {
         stage('fetch the code') {
             steps {
