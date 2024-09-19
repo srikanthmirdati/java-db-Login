@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('fetch the code') {
             steps {
-               git branch: 'master', credentialsId: 'github-cred', url: 'https://github.com/devopscloudsre/java-db-Login.git'
+               git branch: 'develop', credentialsId: 'github-cred', url: 'https://github.com/devopscloudsre/java-db-Login.git'
             }
         }
             
@@ -25,7 +25,7 @@ pipeline {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 success {
-                    deploy adapters: [tomcat9(credentialsId: 'tomcat-admin-user', path: '', url: 'http://172.31.29.76:8080')], contextPath: '/prod-login', onFailure: false, war: '**/*.war'
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-admin-user', path: '', url: 'http://172.31.29.76:8080')], contextPath: '/dev-login', onFailure: false, war: '**/*.war'
                 }
                 failure {
                     echo "OMG ! The build failed"
