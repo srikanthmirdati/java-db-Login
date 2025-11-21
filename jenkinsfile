@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    tools {
+    maven 'maven'    
+    }
+    stages {
+        stage('fetching the code') {
+            steps {
+                git credentialsId: 'b190eb5a-1665-48a3-bb70-b296f172f591', url: 'https://github.com/srikanthmirdati/java-db-Login.git'
+            }
+        }
+        
+        stage('Building the code') {
+            steps {
+                sh 'mvn clean package'
+    }
+        }
+    
+    
+    stage('Deploying the code') {
+            steps {
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: '13c3b555-81ab-4e4d-a85c-26288bbbd047', path: '', url: 'http://10.1.0.57:8080')], contextPath: 'login', onFailure: false, war: '**/*.war'
+           }
+        }
+      }
+}
+
